@@ -1,0 +1,72 @@
+.reactions-votes {
+	position: absolute;
+	top: 0;
+	right: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 4px;
+	font-size: 20px;
+}
+.reactions-votes-button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 4px;
+	padding: 4px;
+	border-radius: 4px;
+	cursor: pointer;
+	user-select: none;
+	transition:
+		background-color 0.3s,
+		color 0.3s;
+	background-color: transparent;
+	color: #000;
+}
+.reactions-votes-button-upvote:hover {
+	background-color: rgba(34, 197, 94, 0.1);
+}
+.reactions-votes-button-downvote:hover {
+	background-color: rgba(239, 68, 68, 0.1);
+}
+.reactions-votes-button-downvote.reactions-user-choice {
+	background-color: rgba(239, 68, 68, 0.15);
+}
+.reactions-votes-button-upvote.reactions-user-choice {
+	background-color: rgba(34, 197, 94, 0.15);
+}
+
+.reactions-reactions {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	overflow: hidden;
+	font-size: 16px;
+}
+.reactions-reactions-options {
+	display: flex;
+}
+.reactions-reactions-option {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 4px;
+	padding: 4px;
+	border-radius: 4px;
+	cursor: pointer;
+	user-select: none;
+	transition:
+		background-color 0.3s,
+		color 0.3s;
+}
+
+.reactions-reactions-option:hover {
+	background-color: rgba(34, 197, 94, 0.1);
+}
+.reactions-reactions-option.reactions-user-choice {
+	background-color: rgba(34 197 94, 0.35);
+}
+.reactions-reactions-option-count[data-count="0"] {
+	display: none;
+}
