@@ -34,78 +34,157 @@
   });
 
   // src/style.css
-  var style_default = `.reactions-votes {\r
-	position: absolute;\r
-	top: 0;\r
-	right: 0;\r
-	display: flex;\r
-	flex-direction: column;\r
-	align-items: center;\r
-	justify-content: center;\r
-	gap: 4px;\r
-	font-size: 20px;\r
-}\r
-.reactions-votes-button {\r
-	display: flex;\r
-	align-items: center;\r
-	justify-content: center;\r
-	gap: 4px;\r
-	padding: 4px;\r
-	border-radius: 4px;\r
-	cursor: pointer;\r
-	user-select: none;\r
-	transition:\r
-		background-color 0.3s,\r
-		color 0.3s;\r
-	background-color: transparent;\r
-	color: #000;\r
-}\r
-.reactions-votes-button-upvote:hover {\r
-	background-color: rgba(34, 197, 94, 0.1);\r
-}\r
-.reactions-votes-button-downvote:hover {\r
-	background-color: rgba(239, 68, 68, 0.1);\r
-}\r
-.reactions-votes-button-downvote.reactions-user-choice {\r
-	background-color: rgba(239, 68, 68, 0.15);\r
-}\r
-.reactions-votes-button-upvote.reactions-user-choice {\r
-	background-color: rgba(34, 197, 94, 0.15);\r
-}\r
-\r
-.reactions-reactions {\r
-	position: absolute;\r
-	bottom: 0;\r
-	right: 0;\r
-	overflow: hidden;\r
-	font-size: 16px;\r
-}\r
-.reactions-reactions-options {\r
-	display: flex;\r
-}\r
-.reactions-reactions-option {\r
-	display: flex;\r
-	align-items: center;\r
-	justify-content: center;\r
-	gap: 4px;\r
-	padding: 4px;\r
-	border-radius: 4px;\r
-	cursor: pointer;\r
-	user-select: none;\r
-	transition:\r
-		background-color 0.3s,\r
-		color 0.3s;\r
-}\r
-\r
-.reactions-reactions-option:hover {\r
-	background-color: rgba(34, 197, 94, 0.1);\r
-}\r
-.reactions-reactions-option.reactions-user-choice {\r
-	background-color: rgba(34 197 94, 0.35);\r
-}\r
-.reactions-reactions-option-count[data-count="0"] {\r
-	display: none;\r
-}\r
+  var style_default = `.reactions-votes {
+	position: absolute;
+	top: 0;
+	right: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 4px;
+	font-size: 20px;
+}
+.reactions-votes-button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 4px;
+	padding: 4px;
+	border-radius: 4px;
+	cursor: pointer;
+	user-select: none;
+	transition:
+		background-color 0.3s,
+		color 0.3s;
+	background-color: transparent;
+	color: #000;
+}
+.reactions-votes-button-upvote:hover {
+	background-color: rgba(34, 197, 94, 0.1);
+}
+.reactions-votes-button-downvote:hover {
+	background-color: rgba(239, 68, 68, 0.1);
+}
+.reactions-votes-button-downvote.reactions-user-choice {
+	background-color: rgba(239, 68, 68, 0.15);
+}
+.reactions-votes-button-upvote.reactions-user-choice {
+	background-color: rgba(34, 197, 94, 0.15);
+}
+
+.reactions-reactions {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	font-size: 16px;
+}
+
+/* Compact view styles */
+.reactions-compact-view {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}
+
+.reactions-add-button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 4px 8px;
+	border-radius: 12px;
+	cursor: pointer;
+	user-select: none;
+	transition: background-color 0.2s ease;
+	background-color: rgba(0, 0, 0, 0.05);
+	font-size: 18px;
+}
+
+.reactions-add-button:hover {
+	background-color: rgba(0, 0, 0, 0.1);
+}
+
+.reactions-compact-reactions {
+	display: none;
+	gap: 2px;
+}
+
+.reactions-compact-option {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 2px;
+	padding: 2px 6px;
+	border-radius: 10px;
+	cursor: pointer;
+	user-select: none;
+	transition: background-color 0.2s ease;
+	background-color: rgba(0, 0, 0, 0.05);
+	font-size: 14px;
+}
+
+.reactions-compact-option:hover {
+	background-color: rgba(34, 197, 94, 0.1);
+}
+
+.reactions-compact-option.reactions-user-choice {
+	background-color: rgba(34, 197, 94, 0.2);
+}
+
+.reactions-compact-option-count {
+	font-size: 12px;
+	font-weight: 500;
+}
+
+/* Expanded view styles */
+.reactions-expanded-view {
+	display: none;
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	background: white;
+	border: 1px solid #e5e5e5;
+	border-radius: 8px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+	z-index: 1000;
+}
+
+.reactions-reactions.reactions-expanded .reactions-compact-view {
+	display: none;
+}
+
+.reactions-reactions.reactions-expanded .reactions-expanded-view {
+	display: block;
+}
+
+.reactions-reactions-options {
+	display: flex;
+	padding: 4px;
+	gap: 2px;
+}
+.reactions-reactions-option {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 4px;
+	padding: 6px 8px;
+	border-radius: 6px;
+	cursor: pointer;
+	user-select: none;
+	transition:
+		background-color 0.3s,
+		color 0.3s;
+}
+
+.reactions-reactions-option:hover {
+	background-color: rgba(34, 197, 94, 0.1);
+}
+.reactions-reactions-option.reactions-user-choice {
+	background-color: rgba(34, 197, 94, 0.35);
+}
+.reactions-reactions-option-count[data-count="0"] {
+	display: none;
+}
 `;
 
   // src/config.ts
@@ -825,6 +904,24 @@
     const reactions = Object.assign(document.createElement("div"), {
       className: "reactions-reactions"
     });
+    const compactView = Object.assign(document.createElement("div"), {
+      className: "reactions-compact-view"
+    });
+    const addReactionButton = Object.assign(document.createElement("div"), {
+      className: "reactions-add-button",
+      innerHTML: `<div class="reactions-add-button-icon">\uD83D\uDE0A</div>`,
+      title: "Add reaction"
+    });
+    addReactionButton.setAttribute("role", "button");
+    addReactionButton.setAttribute("tabindex", "0");
+    const compactReactions = Object.assign(document.createElement("div"), {
+      className: "reactions-compact-reactions"
+    });
+    compactView.appendChild(addReactionButton);
+    compactView.appendChild(compactReactions);
+    const expandedView = Object.assign(document.createElement("div"), {
+      className: "reactions-expanded-view"
+    });
     const optionsContainer = Object.assign(document.createElement("div"), {
       className: "reactions-reactions-options"
     });
@@ -837,16 +934,43 @@
       option.setAttribute("role", "button");
       option.setAttribute("tabindex", "0");
       optionsContainer.appendChild(option);
+      const compactOption = document.createElement("div");
+      compactOption.className = "reactions-compact-option";
+      compactOption.innerHTML = `<div class="reactions-compact-option-icon">${icon}</div>
+			<div class="reactions-compact-option-count" data-count="0">0</div>`;
+      compactOption.setAttribute("aria-label", reaction);
+      compactOption.setAttribute("role", "button");
+      compactOption.setAttribute("tabindex", "0");
+      compactOption.style.display = "none";
+      compactReactions.appendChild(compactOption);
     });
-    reactions.appendChild(optionsContainer);
+    expandedView.appendChild(optionsContainer);
+    reactions.appendChild(compactView);
+    reactions.appendChild(expandedView);
+    let hoverTimeout;
+    reactions.addEventListener("mouseenter", () => {
+      clearTimeout(hoverTimeout);
+      reactions.classList.add("reactions-expanded");
+    });
+    reactions.addEventListener("mouseleave", () => {
+      hoverTimeout = setTimeout(() => {
+        reactions.classList.remove("reactions-expanded");
+      }, 150);
+    });
     reactionsContainer.appendChild(reactions);
     return reactions;
   }
   function addReactionEventHandlers(elements, pid, topicId, api, stateManager, config) {
     if (!elements.reactions)
       return;
-    const reactionOptions = elements.reactions.querySelectorAll(".reactions-reactions-option");
-    reactionOptions.forEach((option) => {
+    const expandedOptions = elements.reactions.querySelectorAll(".reactions-reactions-option");
+    const compactOptions = elements.reactions.querySelectorAll(".reactions-compact-option");
+    const addButton = elements.reactions.querySelector(".reactions-add-button");
+    const allOptions = [
+      ...Array.from(expandedOptions),
+      ...Array.from(compactOptions)
+    ];
+    allOptions.forEach((option) => {
       option.addEventListener("click", async (event) => {
         event.preventDefault();
         event.stopPropagation();
@@ -863,28 +987,25 @@
           if (response.ok) {
             const newReaction = isActive ? null : reactionName;
             stateManager.setUserReaction(pid, newReaction);
-            removeClassFromAll(reactionOptions, "reactions-user-choice");
+            removeClassFromAll([...Array.from(expandedOptions), ...Array.from(compactOptions)], "reactions-user-choice");
             if (!isActive) {
-              option.classList.add("reactions-user-choice");
+              const expandedOption = Array.from(expandedOptions).find((opt) => opt.getAttribute("aria-label") === reactionName);
+              const compactOption = Array.from(compactOptions).find((opt) => opt.getAttribute("aria-label") === reactionName);
+              if (expandedOption)
+                expandedOption.classList.add("reactions-user-choice");
+              if (compactOption)
+                compactOption.classList.add("reactions-user-choice");
             }
             if (currentUserReaction && currentUserReaction !== reactionName) {
-              const oldOption = Array.from(reactionOptions).find((opt) => opt.getAttribute("aria-label") === currentUserReaction);
-              if (oldOption) {
-                const oldCountEl = oldOption.querySelector(".reactions-reactions-option-count");
-                const currentOldCount = getCurrentCount(oldCountEl);
-                updateCountDisplay(oldCountEl, Math.max(0, currentOldCount - 1));
-              }
-              const newCountEl = option.querySelector(".reactions-reactions-option-count");
-              const currentNewCount = getCurrentCount(newCountEl);
-              updateCountDisplay(newCountEl, currentNewCount + 1);
+              updateReactionCounts(expandedOptions, compactOptions, currentUserReaction, -1);
+              updateReactionCounts(expandedOptions, compactOptions, reactionName, 1);
             } else if (currentUserReaction === reactionName) {
-              const countEl = option.querySelector(".reactions-reactions-option-count");
-              const currentCount = getCurrentCount(countEl);
-              updateCountDisplay(countEl, Math.max(0, currentCount - 1));
+              updateReactionCounts(expandedOptions, compactOptions, reactionName, -1);
             } else if (!currentUserReaction) {
-              const countEl = option.querySelector(".reactions-reactions-option-count");
-              const currentCount = getCurrentCount(countEl);
-              updateCountDisplay(countEl, currentCount + 1);
+              updateReactionCounts(expandedOptions, compactOptions, reactionName, 1);
+            }
+            if (elements.reactions) {
+              updateCompactViewVisibility(elements.reactions);
             }
           }
         } catch (error) {
@@ -894,6 +1015,52 @@
         }
       });
     });
+    if (addButton) {
+      addButton.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        elements.reactions?.classList.add("reactions-expanded");
+      });
+    }
+  }
+  function updateReactionCounts(expandedOptions, compactOptions, reactionName, delta) {
+    const updateOption = (option) => {
+      const countEl = option.querySelector(".reactions-reactions-option-count, .reactions-compact-option-count");
+      if (countEl) {
+        const currentCount = getCurrentCount(countEl);
+        const newCount = Math.max(0, currentCount + delta);
+        updateCountDisplay(countEl, newCount);
+      }
+    };
+    const expandedOption = Array.from(expandedOptions).find((opt) => opt.getAttribute("aria-label") === reactionName);
+    if (expandedOption)
+      updateOption(expandedOption);
+    const compactOption = Array.from(compactOptions).find((opt) => opt.getAttribute("aria-label") === reactionName);
+    if (compactOption)
+      updateOption(compactOption);
+  }
+  function updateCompactViewVisibility(reactionsElement) {
+    const addButton = reactionsElement.querySelector(".reactions-add-button");
+    const compactReactions = reactionsElement.querySelector(".reactions-compact-reactions");
+    const compactOptions = reactionsElement.querySelectorAll(".reactions-compact-option");
+    let hasActiveReactions = false;
+    compactOptions.forEach((option) => {
+      const countEl = option.querySelector(".reactions-compact-option-count");
+      const count = getCurrentCount(countEl);
+      if (count > 0) {
+        option.style.display = "flex";
+        hasActiveReactions = true;
+      } else {
+        option.style.display = "none";
+      }
+    });
+    if (hasActiveReactions) {
+      addButton.style.display = "none";
+      compactReactions.style.display = "flex";
+    } else {
+      addButton.style.display = "flex";
+      compactReactions.style.display = "none";
+    }
   }
   function processReactionData(data, postsMap, currentUser, stateManager) {
     const reactionsByPost = new Map;
@@ -916,14 +1083,23 @@
         return;
       const postReactions = reactionsByPost.get(pid) || new Map;
       const userReaction = userReactionsByPost.get(pid);
-      const reactionOptions = elements.reactions.querySelectorAll(".reactions-reactions-option");
-      reactionOptions.forEach((option) => {
+      const expandedOptions = elements.reactions.querySelectorAll(".reactions-reactions-option");
+      const compactOptions = elements.reactions.querySelectorAll(".reactions-compact-option");
+      expandedOptions.forEach((option) => {
         const reactionName = option.getAttribute("aria-label");
         const count = postReactions.get(reactionName) || 0;
         const countEl = option.querySelector(".reactions-reactions-option-count");
         updateCountDisplay(countEl, count);
         toggleClass(option, "reactions-user-choice", userReaction === reactionName);
       });
+      compactOptions.forEach((option) => {
+        const reactionName = option.getAttribute("aria-label");
+        const count = postReactions.get(reactionName) || 0;
+        const countEl = option.querySelector(".reactions-compact-option-count");
+        updateCountDisplay(countEl, count);
+        toggleClass(option, "reactions-user-choice", userReaction === reactionName);
+      });
+      updateCompactViewVisibility(elements.reactions);
     });
   }
 
@@ -932,7 +1108,6 @@
     const config = createConfig(userConfig);
     const currentUrl = new URL(location.href);
     const topicId = currentUrl.searchParams.get("showtopic") || (currentUrl.searchParams.get("act") === "ST" ? currentUrl.searchParams.get("t") : null);
-    console.log({ topicId, showtopic: currentUrl.searchParams.get("showtopic") });
     if (!topicId)
       return;
     const currentUser = getCurrentUser();

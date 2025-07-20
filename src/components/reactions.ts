@@ -29,7 +29,7 @@ const REACTION_ICONS: ReactionIcons = {
 };
 
 /**
- * Create reaction UI elements for a post
+ * Create reaction UI elements for a post with compact and expanded views
  */
 export function createReactionElements(
 	config: ReactionsConfig,
@@ -39,6 +39,33 @@ export function createReactionElements(
 
 	const reactions = Object.assign(document.createElement("div"), {
 		className: "reactions-reactions"
+	});
+
+	// Create compact view container
+	const compactView = Object.assign(document.createElement("div"), {
+		className: "reactions-compact-view"
+	});
+
+	// Create add reaction button (shown when no reactions exist)
+	const addReactionButton = Object.assign(document.createElement("div"), {
+		className: "reactions-add-button",
+		innerHTML: `<div class="reactions-add-button-icon">😊</div>`,
+		title: "Add reaction"
+	});
+	addReactionButton.setAttribute("role", "button");
+	addReactionButton.setAttribute("tabindex", "0");
+
+	// Create compact reactions container (shown when reactions exist)
+	const compactReactions = Object.assign(document.createElement("div"), {
+		className: "reactions-compact-reactions"
+	});
+
+	compactView.appendChild(addReactionButton);
+	compactView.appendChild(compactReactions);
+
+	// Create expanded view container (shown on hover)
+	const expandedView = Object.assign(document.createElement("div"), {
+		className: "reactions-expanded-view"
 	});
 
 	const optionsContainer = Object.assign(document.createElement("div"), {
@@ -55,73 +82,41 @@ export function createReactionElements(
 			option.setAttribute("role", "button");
 			option.setAttribute("tabindex", "0");
 			optionsContainer.appendChild(option);
+
+			// Also create compact version for when this reaction has count > 0
+			const compactOption = document.createElement("div");
+			compactOption.className = "reactions-compact-option";
+			compactOption.innerHTML = `<div class="reactions-compact-option-icon">${icon}</div>
+			<div class="reactions-compact-option-count" data-count="0">0</div>`;
+			compactOption.setAttribute("aria-label", reaction);
+			compactOption.setAttribute("role", "button");
+			compactOption.setAttribute("tabindex", "0");
+			compactOption.style.display = "none"; // Initially hidden
+			compactReactions.appendChild(compactOption);
 		}
 	);
 
-	reactions.appendChild(optionsContainer);
+	expandedView.appendChild(optionsContainer);
+	reactions.appendChild(compactView);
+	reactions.appendChild(expandedView);
+
+	// Add hover behavior
+	let hoverTimeout: NodeJS.Timeout;
+
+	reactions.addEventListener("mouseenter", () => {
+		clearTimeout(hoverTimeout);
+		reactions.classList.add("reactions-expanded");
+	});
+
+	reactions.addEventListener("mouseleave", () => {
+		hoverTimeout = setTimeout(() => {
+			reactions.classList.remove("reactions-expanded");
+		}, 150); // Small delay to prevent flickering
+	});
+
 	reactionsContainer.appendChild(reactions);
 
 	return reactions;
-}
-
-/**
- * Update reaction UI manually (when optimistic updates are disabled)
- */
-function updateReactionUI(
-	elements: PostElements,
-	reactionName: string,
-	isRemoving: boolean,
-	previousUserReaction: string | null
-): void {
-	if (!elements.reactions) return;
-
-	const reactionOptions = elements.reactions.querySelectorAll(
-		".reactions-reactions-option"
-	);
-	const targetOption = Array.from(reactionOptions).find(
-		(opt) => opt.getAttribute("aria-label") === reactionName
-	) as HTMLElement;
-
-	if (!targetOption) return;
-
-	// Remove active from all reactions
-	removeClassFromAll(reactionOptions, "reactions-user-choice");
-
-	if (!isRemoving) {
-		targetOption.classList.add("reactions-user-choice");
-	}
-
-	// Update counts
-	if (previousUserReaction && previousUserReaction !== reactionName) {
-		// Switching reactions
-		const oldOption = Array.from(reactionOptions).find(
-			(opt) => opt.getAttribute("aria-label") === previousUserReaction
-		) as HTMLElement;
-
-		if (oldOption) {
-			const oldCountEl = oldOption.querySelector(
-				".reactions-reactions-option-count"
-			) as HTMLElement;
-			const oldCount = getCurrentCount(oldCountEl);
-			updateCountDisplay(oldCountEl, Math.max(0, oldCount - 1));
-		}
-
-		const newCountEl = targetOption.querySelector(
-			".reactions-reactions-option-count"
-		) as HTMLElement;
-		const newCount = getCurrentCount(newCountEl);
-		updateCountDisplay(newCountEl, newCount + 1);
-	} else {
-		// Simple toggle
-		const countEl = targetOption.querySelector(
-			".reactions-reactions-option-count"
-		) as HTMLElement;
-		const currentCount = getCurrentCount(countEl);
-		const newCount = isRemoving
-			? Math.max(0, currentCount - 1)
-			: currentCount + 1;
-		updateCountDisplay(countEl, newCount);
-	}
 }
 
 /**
@@ -137,11 +132,22 @@ export function addReactionEventHandlers(
 ): void {
 	if (!elements.reactions) return;
 
-	const reactionOptions = elements.reactions.querySelectorAll(
+	// Get all reaction options from both views
+	const expandedOptions = elements.reactions.querySelectorAll(
 		".reactions-reactions-option"
 	);
+	const compactOptions = elements.reactions.querySelectorAll(
+		".reactions-compact-option"
+	);
+	const addButton = elements.reactions.querySelector(".reactions-add-button");
 
-	reactionOptions.forEach((option) => {
+	// Handle clicks on all reaction options (both compact and expanded)
+	const allOptions = [
+		...Array.from(expandedOptions),
+		...Array.from(compactOptions)
+	];
+
+	allOptions.forEach((option) => {
 		option.addEventListener("click", async (event) => {
 			// Prevent event bubbling and multiple triggers
 			event.preventDefault();
@@ -168,46 +174,62 @@ export function addReactionEventHandlers(
 					const newReaction = isActive ? null : reactionName;
 					stateManager.setUserReaction(pid, newReaction);
 
-					// Update UI states
-					removeClassFromAll(reactionOptions, "reactions-user-choice");
+					// Update UI states for both views
+					removeClassFromAll(
+						[...Array.from(expandedOptions), ...Array.from(compactOptions)],
+						"reactions-user-choice"
+					);
 					if (!isActive) {
-						option.classList.add("reactions-user-choice");
+						// Mark as active in both views
+						const expandedOption = Array.from(expandedOptions).find(
+							(opt) => opt.getAttribute("aria-label") === reactionName
+						);
+						const compactOption = Array.from(compactOptions).find(
+							(opt) => opt.getAttribute("aria-label") === reactionName
+						);
+
+						if (expandedOption)
+							expandedOption.classList.add("reactions-user-choice");
+						if (compactOption)
+							compactOption.classList.add("reactions-user-choice");
 					}
 
 					// Handle count updates based on the state transition
 					if (currentUserReaction && currentUserReaction !== reactionName) {
 						// Switching from one reaction to another
-						// Decrease old reaction count, increase new reaction count
-						const oldOption = Array.from(reactionOptions).find(
-							(opt) => opt.getAttribute("aria-label") === currentUserReaction
+						updateReactionCounts(
+							expandedOptions,
+							compactOptions,
+							currentUserReaction,
+							-1
 						);
-						if (oldOption) {
-							const oldCountEl = oldOption.querySelector(
-								".reactions-reactions-option-count"
-							) as HTMLElement;
-							const currentOldCount = getCurrentCount(oldCountEl);
-							updateCountDisplay(oldCountEl, Math.max(0, currentOldCount - 1));
-						}
-						// Increment the new reaction
-						const newCountEl = option.querySelector(
-							".reactions-reactions-option-count"
-						) as HTMLElement;
-						const currentNewCount = getCurrentCount(newCountEl);
-						updateCountDisplay(newCountEl, currentNewCount + 1);
+						updateReactionCounts(
+							expandedOptions,
+							compactOptions,
+							reactionName,
+							1
+						);
 					} else if (currentUserReaction === reactionName) {
 						// Removing current reaction (clicking same reaction again)
-						const countEl = option.querySelector(
-							".reactions-reactions-option-count"
-						) as HTMLElement;
-						const currentCount = getCurrentCount(countEl);
-						updateCountDisplay(countEl, Math.max(0, currentCount - 1));
+						updateReactionCounts(
+							expandedOptions,
+							compactOptions,
+							reactionName,
+							-1
+						);
 					} else if (!currentUserReaction) {
 						// Adding new reaction (no previous reaction)
-						const countEl = option.querySelector(
-							".reactions-reactions-option-count"
-						) as HTMLElement;
-						const currentCount = getCurrentCount(countEl);
-						updateCountDisplay(countEl, currentCount + 1);
+						updateReactionCounts(
+							expandedOptions,
+							compactOptions,
+							reactionName,
+							1
+						);
+					}
+
+					// Update compact view visibility
+					if (elements.reactions) {
+						updateCompactViewVisibility(elements.reactions);
 					}
 				}
 			} catch (error) {
@@ -217,6 +239,89 @@ export function addReactionEventHandlers(
 			}
 		});
 	});
+
+	// Handle click on add reaction button (just expands the view)
+	if (addButton) {
+		addButton.addEventListener("click", (event: Event) => {
+			event.preventDefault();
+			event.stopPropagation();
+			elements.reactions?.classList.add("reactions-expanded");
+		});
+	}
+}
+
+/**
+ * Helper function to update counts in both expanded and compact views
+ */
+function updateReactionCounts(
+	expandedOptions: NodeListOf<Element>,
+	compactOptions: NodeListOf<Element>,
+	reactionName: string,
+	delta: number
+): void {
+	const updateOption = (option: Element) => {
+		const countEl = option.querySelector(
+			".reactions-reactions-option-count, .reactions-compact-option-count"
+		) as HTMLElement;
+		if (countEl) {
+			const currentCount = getCurrentCount(countEl);
+			const newCount = Math.max(0, currentCount + delta);
+			updateCountDisplay(countEl, newCount);
+		}
+	};
+
+	// Update expanded view
+	const expandedOption = Array.from(expandedOptions).find(
+		(opt) => opt.getAttribute("aria-label") === reactionName
+	);
+	if (expandedOption) updateOption(expandedOption);
+
+	// Update compact view
+	const compactOption = Array.from(compactOptions).find(
+		(opt) => opt.getAttribute("aria-label") === reactionName
+	);
+	if (compactOption) updateOption(compactOption);
+}
+
+/**
+ * Update visibility of compact view elements based on reaction counts
+ */
+function updateCompactViewVisibility(reactionsElement: HTMLElement): void {
+	const addButton = reactionsElement.querySelector(
+		".reactions-add-button"
+	) as HTMLElement;
+	const compactReactions = reactionsElement.querySelector(
+		".reactions-compact-reactions"
+	) as HTMLElement;
+	const compactOptions = reactionsElement.querySelectorAll(
+		".reactions-compact-option"
+	) as NodeListOf<HTMLElement>;
+
+	let hasActiveReactions = false;
+
+	// Show/hide compact options based on count
+	compactOptions.forEach((option) => {
+		const countEl = option.querySelector(
+			".reactions-compact-option-count"
+		) as HTMLElement;
+		const count = getCurrentCount(countEl);
+
+		if (count > 0) {
+			option.style.display = "flex";
+			hasActiveReactions = true;
+		} else {
+			option.style.display = "none";
+		}
+	});
+
+	// Show add button if no reactions, show compact reactions if reactions exist
+	if (hasActiveReactions) {
+		addButton.style.display = "none";
+		compactReactions.style.display = "flex";
+	} else {
+		addButton.style.display = "flex";
+		compactReactions.style.display = "none";
+	}
 }
 
 /**
@@ -260,26 +365,52 @@ export function processReactionData(
 		const postReactions = reactionsByPost.get(pid) || new Map();
 		const userReaction = userReactionsByPost.get(pid);
 
-		// Update reaction options
-		const reactionOptions = elements.reactions.querySelectorAll(
+		// Update expanded view reaction options
+		const expandedOptions = elements.reactions.querySelectorAll(
 			".reactions-reactions-option"
 		);
-		reactionOptions.forEach((option) => {
+		// Update compact view reaction options
+		const compactOptions = elements.reactions.querySelectorAll(
+			".reactions-compact-option"
+		);
+
+		expandedOptions.forEach((option) => {
 			const reactionName = option.getAttribute("aria-label")!;
 			const count = postReactions.get(reactionName) || 0;
 
-			// Update count
+			// Update count in expanded view
 			const countEl = option.querySelector(
 				".reactions-reactions-option-count"
 			) as HTMLElement;
 			updateCountDisplay(countEl, count);
 
-			// Mark user's choice
+			// Mark user's choice in expanded view
 			toggleClass(
 				option as HTMLElement,
 				"reactions-user-choice",
 				userReaction === reactionName
 			);
 		});
+
+		compactOptions.forEach((option) => {
+			const reactionName = option.getAttribute("aria-label")!;
+			const count = postReactions.get(reactionName) || 0;
+
+			// Update count in compact view
+			const countEl = option.querySelector(
+				".reactions-compact-option-count"
+			) as HTMLElement;
+			updateCountDisplay(countEl, count);
+
+			// Mark user's choice in compact view
+			toggleClass(
+				option as HTMLElement,
+				"reactions-user-choice",
+				userReaction === reactionName
+			);
+		});
+
+		// Update compact view visibility
+		updateCompactViewVisibility(elements.reactions);
 	});
 }
