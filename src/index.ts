@@ -27,9 +27,9 @@ export default async function Reactions(userConfig?: Partial<ReactionsConfig>) {
 	const currentUrl = new URL(location.href);
 	const topicId =
 		currentUrl.searchParams.get("showtopic") ||
-		currentUrl.searchParams.get("act") === "ST"
+		(currentUrl.searchParams.get("act") === "ST"
 			? currentUrl.searchParams.get("t")
-			: null;
+			: null);
 	if (!topicId) return;
 
 	// Get current user information

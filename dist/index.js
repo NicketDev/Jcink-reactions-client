@@ -931,7 +931,8 @@
   async function Reactions(userConfig) {
     const config = createConfig(userConfig);
     const currentUrl = new URL(location.href);
-    const topicId = currentUrl.searchParams.get("showtopic") || currentUrl.searchParams.get("act") === "ST" ? currentUrl.searchParams.get("t") : null;
+    const topicId = currentUrl.searchParams.get("showtopic") || (currentUrl.searchParams.get("act") === "ST" ? currentUrl.searchParams.get("t") : null);
+    console.log({ topicId, showtopic: currentUrl.searchParams.get("showtopic") });
     if (!topicId)
       return;
     const currentUser = getCurrentUser();
