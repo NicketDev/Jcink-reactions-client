@@ -13,19 +13,18 @@ import {
 	toggleClass,
 	removeClassFromAll
 } from "../ui";
-import { debounce } from "../utils/debounce";
-import { ErrorNotifier } from "../utils/errors";
 
 const REACTION_ICONS: ReactionIcons = {
 	heart: "❤️",
-	laugh: "😂",
+	smile: "😊",
+	laughing: "😂",
 	clap: "👏",
-	thinking: "🤔",
 	sad: "😢",
-	angry: "😠",
-	confused: "😕",
 	thumbsup: "👍",
-	thumbsdown: "👎"
+	thumbsdown: "👎",
+	angry: "😠",
+	surprised: "😮",
+	prayer: "🙏"
 };
 
 /**
@@ -91,7 +90,6 @@ export function createReactionElements(
 			compactOption.setAttribute("aria-label", reaction);
 			compactOption.setAttribute("role", "button");
 			compactOption.setAttribute("tabindex", "0");
-			compactOption.style.display = "none"; // Initially hidden
 			compactReactions.appendChild(compactOption);
 		}
 	);
@@ -99,20 +97,6 @@ export function createReactionElements(
 	expandedView.appendChild(optionsContainer);
 	reactions.appendChild(compactView);
 	reactions.appendChild(expandedView);
-
-	// Add hover behavior
-	let hoverTimeout: NodeJS.Timeout;
-
-	reactions.addEventListener("mouseenter", () => {
-		clearTimeout(hoverTimeout);
-		reactions.classList.add("reactions-expanded");
-	});
-
-	reactions.addEventListener("mouseleave", () => {
-		hoverTimeout = setTimeout(() => {
-			reactions.classList.remove("reactions-expanded");
-		}, 150); // Small delay to prevent flickering
-	});
 
 	reactionsContainer.appendChild(reactions);
 
@@ -240,14 +224,7 @@ export function addReactionEventHandlers(
 		});
 	});
 
-	// Handle click on add reaction button (just expands the view)
-	if (addButton) {
-		addButton.addEventListener("click", (event: Event) => {
-			event.preventDefault();
-			event.stopPropagation();
-			elements.reactions?.classList.add("reactions-expanded");
-		});
-	}
+	// Add button now just serves as a visual cue - expansion is handled by CSS hover
 }
 
 /**
@@ -307,20 +284,20 @@ function updateCompactViewVisibility(reactionsElement: HTMLElement): void {
 		const count = getCurrentCount(countEl);
 
 		if (count > 0) {
-			option.style.display = "flex";
+			option.classList.add("reactions-active");
 			hasActiveReactions = true;
 		} else {
-			option.style.display = "none";
+			option.classList.remove("reactions-active");
 		}
 	});
 
 	// Show add button if no reactions, show compact reactions if reactions exist
 	if (hasActiveReactions) {
-		addButton.style.display = "none";
-		compactReactions.style.display = "flex";
+		addButton.classList.add("reactions-hidden");
+		compactReactions.classList.add("reactions-has-active");
 	} else {
-		addButton.style.display = "flex";
-		compactReactions.style.display = "none";
+		addButton.classList.remove("reactions-hidden");
+		compactReactions.classList.remove("reactions-has-active");
 	}
 }
 

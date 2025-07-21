@@ -27,12 +27,6 @@ export class ReactionsAPI {
 		sp.set("forumUrl", location.origin);
 		sp.set("topicId", this.topicId);
 
-		console.log({
-			server: this.config.server,
-			path,
-			query: `${sp}`
-		});
-
 		return withRetry(
 			async () => {
 				const response = await fetch(`${this.config.server}${path}?${sp}`, {

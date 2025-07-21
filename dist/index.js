@@ -34,157 +34,182 @@
   });
 
   // src/style.css
-  var style_default = `.reactions-votes {
-	position: absolute;
-	top: 0;
-	right: 0;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	gap: 4px;
-	font-size: 20px;
-}
-.reactions-votes-button {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	gap: 4px;
-	padding: 4px;
-	border-radius: 4px;
-	cursor: pointer;
-	user-select: none;
-	transition:
-		background-color 0.3s,
-		color 0.3s;
-	background-color: transparent;
-	color: #000;
-}
-.reactions-votes-button-upvote:hover {
-	background-color: rgba(34, 197, 94, 0.1);
-}
-.reactions-votes-button-downvote:hover {
-	background-color: rgba(239, 68, 68, 0.1);
-}
-.reactions-votes-button-downvote.reactions-user-choice {
-	background-color: rgba(239, 68, 68, 0.15);
-}
-.reactions-votes-button-upvote.reactions-user-choice {
-	background-color: rgba(34, 197, 94, 0.15);
-}
-
-.reactions-reactions {
-	position: absolute;
-	bottom: 0;
-	right: 0;
-	font-size: 16px;
-}
-
-/* Compact view styles */
-.reactions-compact-view {
-	display: flex;
-	align-items: center;
-	gap: 4px;
-}
-
-.reactions-add-button {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	padding: 4px 8px;
-	border-radius: 12px;
-	cursor: pointer;
-	user-select: none;
-	transition: background-color 0.2s ease;
-	background-color: rgba(0, 0, 0, 0.05);
-	font-size: 18px;
-}
-
-.reactions-add-button:hover {
-	background-color: rgba(0, 0, 0, 0.1);
-}
-
-.reactions-compact-reactions {
-	display: none;
-	gap: 2px;
-}
-
-.reactions-compact-option {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	gap: 2px;
-	padding: 2px 6px;
-	border-radius: 10px;
-	cursor: pointer;
-	user-select: none;
-	transition: background-color 0.2s ease;
-	background-color: rgba(0, 0, 0, 0.05);
-	font-size: 14px;
-}
-
-.reactions-compact-option:hover {
-	background-color: rgba(34, 197, 94, 0.1);
-}
-
-.reactions-compact-option.reactions-user-choice {
-	background-color: rgba(34, 197, 94, 0.2);
-}
-
-.reactions-compact-option-count {
-	font-size: 12px;
-	font-weight: 500;
-}
-
-/* Expanded view styles */
-.reactions-expanded-view {
-	display: none;
-	position: absolute;
-	bottom: 0;
-	right: 0;
-	background: white;
-	border: 1px solid #e5e5e5;
-	border-radius: 8px;
-	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-	z-index: 1000;
-}
-
-.reactions-reactions.reactions-expanded .reactions-compact-view {
-	display: none;
-}
-
-.reactions-reactions.reactions-expanded .reactions-expanded-view {
-	display: block;
-}
-
-.reactions-reactions-options {
-	display: flex;
-	padding: 4px;
-	gap: 2px;
-}
-.reactions-reactions-option {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	gap: 4px;
-	padding: 6px 8px;
-	border-radius: 6px;
-	cursor: pointer;
-	user-select: none;
-	transition:
-		background-color 0.3s,
-		color 0.3s;
-}
-
-.reactions-reactions-option:hover {
-	background-color: rgba(34, 197, 94, 0.1);
-}
-.reactions-reactions-option.reactions-user-choice {
-	background-color: rgba(34, 197, 94, 0.35);
-}
-.reactions-reactions-option-count[data-count="0"] {
-	display: none;
-}
+  var style_default = `.reactions-votes {\r
+	position: absolute;\r
+	top: 0;\r
+	right: 0;\r
+	display: flex;\r
+	flex-direction: column;\r
+	align-items: center;\r
+	justify-content: center;\r
+	gap: 4px;\r
+	font-size: 20px;\r
+}\r
+.reactions-votes-button {\r
+	display: flex;\r
+	align-items: center;\r
+	justify-content: center;\r
+	gap: 4px;\r
+	padding: 4px;\r
+	border-radius: 4px;\r
+	cursor: pointer;\r
+	user-select: none;\r
+	transition:\r
+		background-color 0.3s,\r
+		color 0.3s;\r
+	background-color: transparent;\r
+	color: #000;\r
+}\r
+.reactions-votes-button-upvote:hover {\r
+	background-color: rgba(34, 197, 94, 0.1);\r
+}\r
+.reactions-votes-button-downvote:hover {\r
+	background-color: rgba(239, 68, 68, 0.1);\r
+}\r
+.reactions-votes-button-downvote.reactions-user-choice {\r
+	background-color: rgba(239, 68, 68, 0.15);\r
+}\r
+.reactions-votes-button-upvote.reactions-user-choice {\r
+	background-color: rgba(34, 197, 94, 0.15);\r
+}\r
+\r
+.reactions-reactions {\r
+	position: absolute;\r
+	bottom: 0;\r
+	right: 0;\r
+	font-size: 16px;\r
+}\r
+\r
+/* Compact view styles */\r
+.reactions-compact-view {\r
+	display: flex;\r
+	align-items: center;\r
+	gap: 4px;\r
+	margin: 4px;\r
+	opacity: 1;\r
+	transition: opacity 0.2s ease;\r
+}\r
+\r
+.reactions-add-button {\r
+	display: flex;\r
+	align-items: center;\r
+	justify-content: center;\r
+	padding: 4px 8px;\r
+	border-radius: 12px;\r
+	cursor: pointer;\r
+	user-select: none;\r
+	transition: background-color 0.2s ease;\r
+	background-color: rgba(0, 0, 0, 0.05);\r
+	font-size: 18px;\r
+}\r
+\r
+.reactions-add-button:hover {\r
+	background-color: rgba(0, 0, 0, 0.1);\r
+}\r
+\r
+.reactions-add-button.reactions-hidden {\r
+	display: none;\r
+}\r
+\r
+.reactions-compact-reactions {\r
+	display: none;\r
+	gap: 2px;\r
+}\r
+\r
+.reactions-compact-reactions.reactions-has-active {\r
+	display: flex;\r
+}\r
+\r
+.reactions-compact-option {\r
+	display: none;\r
+	align-items: center;\r
+	justify-content: center;\r
+	gap: 2px;\r
+	padding: 2px 6px;\r
+	border-radius: 10px;\r
+	cursor: pointer;\r
+	user-select: none;\r
+	transition: background-color 0.2s ease;\r
+	background-color: rgba(0, 0, 0, 0.05);\r
+	font-size: 14px;\r
+}\r
+\r
+.reactions-compact-option.reactions-active {\r
+	display: flex;\r
+}\r
+\r
+.reactions-compact-option:hover {\r
+	background-color: rgba(34, 197, 94, 0.1);\r
+}\r
+\r
+.reactions-compact-option.reactions-user-choice {\r
+	background-color: rgba(34, 197, 94, 0.2);\r
+}\r
+\r
+.reactions-compact-option-count {\r
+	font-size: 12px;\r
+	font-weight: 500;\r
+}\r
+\r
+/* Expanded view styles */\r
+.reactions-expanded-view {\r
+	position: absolute;\r
+	bottom: 4px;\r
+	right: 4px;\r
+	background: white;\r
+	border: 1px solid #e5e5e5;\r
+	border-radius: 8px;\r
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);\r
+	z-index: 1000;\r
+	opacity: 0;\r
+	transform: translateY(8px) scale(0.95);\r
+	pointer-events: none;\r
+	transition:\r
+		opacity 0.2s ease,\r
+		transform 0.2s ease;\r
+}\r
+\r
+/* Transitions on post hover with slight delay to prevent flickering */\r
+.post-normal:hover .reactions-expanded-view {\r
+	opacity: 1;\r
+	transform: translateY(0) scale(1);\r
+	pointer-events: auto;\r
+	transition-delay: 0.1s;\r
+}\r
+\r
+.post-normal:hover .reactions-compact-view {\r
+	opacity: 0;\r
+	transition-delay: 0.05s;\r
+}\r
+\r
+.reactions-reactions-options {\r
+	display: flex;\r
+	padding: 4px;\r
+	gap: 2px;\r
+}\r
+.reactions-reactions-option {\r
+	display: flex;\r
+	align-items: center;\r
+	justify-content: center;\r
+	gap: 4px;\r
+	padding: 6px 8px;\r
+	border-radius: 6px;\r
+	cursor: pointer;\r
+	user-select: none;\r
+	transition:\r
+		background-color 0.3s,\r
+		color 0.3s;\r
+}\r
+\r
+.reactions-reactions-option:hover {\r
+	background-color: rgba(34, 197, 94, 0.1);\r
+}\r
+.reactions-reactions-option.reactions-user-choice {\r
+	background-color: rgba(34, 197, 94, 0.35);\r
+}\r
+.reactions-reactions-option-count[data-count="0"] {\r
+	display: none;\r
+}\r
 `;
 
   // src/config.ts
@@ -425,11 +450,6 @@
       const sp = new URLSearchParams(getOptions?.query);
       sp.set("forumUrl", location.origin);
       sp.set("topicId", this.topicId);
-      console.log({
-        server: this.config.server,
-        path,
-        query: `${sp}`
-      });
       return withRetry(async () => {
         const response = await fetch(`${this.config.server}${path}?${sp}`, {
           headers: {
@@ -941,22 +961,11 @@
       compactOption.setAttribute("aria-label", reaction);
       compactOption.setAttribute("role", "button");
       compactOption.setAttribute("tabindex", "0");
-      compactOption.style.display = "none";
       compactReactions.appendChild(compactOption);
     });
     expandedView.appendChild(optionsContainer);
     reactions.appendChild(compactView);
     reactions.appendChild(expandedView);
-    let hoverTimeout;
-    reactions.addEventListener("mouseenter", () => {
-      clearTimeout(hoverTimeout);
-      reactions.classList.add("reactions-expanded");
-    });
-    reactions.addEventListener("mouseleave", () => {
-      hoverTimeout = setTimeout(() => {
-        reactions.classList.remove("reactions-expanded");
-      }, 150);
-    });
     reactionsContainer.appendChild(reactions);
     return reactions;
   }
@@ -1015,13 +1024,6 @@
         }
       });
     });
-    if (addButton) {
-      addButton.addEventListener("click", (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        elements.reactions?.classList.add("reactions-expanded");
-      });
-    }
   }
   function updateReactionCounts(expandedOptions, compactOptions, reactionName, delta) {
     const updateOption = (option) => {
@@ -1048,18 +1050,18 @@
       const countEl = option.querySelector(".reactions-compact-option-count");
       const count = getCurrentCount(countEl);
       if (count > 0) {
-        option.style.display = "flex";
+        option.classList.add("reactions-active");
         hasActiveReactions = true;
       } else {
-        option.style.display = "none";
+        option.classList.remove("reactions-active");
       }
     });
     if (hasActiveReactions) {
-      addButton.style.display = "none";
-      compactReactions.style.display = "flex";
+      addButton.classList.add("reactions-hidden");
+      compactReactions.classList.add("reactions-has-active");
     } else {
-      addButton.style.display = "flex";
-      compactReactions.style.display = "none";
+      addButton.classList.remove("reactions-hidden");
+      compactReactions.classList.remove("reactions-has-active");
     }
   }
   function processReactionData(data, postsMap, currentUser, stateManager) {
@@ -1104,61 +1106,86 @@
   }
 
   // src/index.ts
-  async function Reactions(userConfig) {
-    const config = createConfig(userConfig);
+  function extractTopicId() {
     const currentUrl = new URL(location.href);
-    const topicId = currentUrl.searchParams.get("showtopic") || (currentUrl.searchParams.get("act") === "ST" ? currentUrl.searchParams.get("t") : null);
-    if (!topicId)
+    return currentUrl.searchParams.get("showtopic") || (currentUrl.searchParams.get("act") === "ST" ? currentUrl.searchParams.get("t") : null);
+  }
+  function initializePostElements(postElement, config, postsMap, topicId, api, stateManager) {
+    const reactionsContainer = postElement.querySelector(config.selectors.reactionsContainer);
+    if (!reactionsContainer) {
+      return null;
+    }
+    reactionsContainer.style.position = "relative";
+    const { votes, upvote, downvote } = createVoteElements(config, reactionsContainer);
+    const reactions = createReactionElements(config, reactionsContainer);
+    const elements = {
+      post: postElement,
+      reactionsContainer,
+      votes,
+      upvote,
+      downvote,
+      reactions: reactions || undefined
+    };
+    const postId = config.pidFn(elements);
+    postsMap.set(postId, elements);
+    addVoteEventHandlers(elements, postId, topicId, api, stateManager, config);
+    addReactionEventHandlers(elements, postId, topicId, api, stateManager, config);
+    return postId;
+  }
+  async function loadReactionsData(api, postIds, postsMap, currentUser, stateManager) {
+    try {
+      const response = await api.get("/reactions", {
+        query: { postIds: postIds.join(",") }
+      });
+      const data = await response.json();
+      processReactionData(data, postsMap, currentUser, stateManager);
+    } catch (error) {
+      console.error("Failed to load reactions:", error);
+      ErrorNotifier.getInstance().showError(error);
+    }
+  }
+  async function loadVotesData(api, postIds, postsMap, currentUser, stateManager) {
+    try {
+      const response = await api.get("/votes", {
+        query: { postIds: postIds.join(",") }
+      });
+      const data = await response.json();
+      processVoteData(data, postsMap, currentUser, stateManager);
+    } catch (error) {
+      console.error("Failed to load votes:", error);
+      ErrorNotifier.getInstance().showError(error);
+    }
+  }
+  async function Reactions(userConfig) {
+    const topicId = extractTopicId();
+    if (!topicId) {
       return;
+    }
+    const config = createConfig(userConfig);
     const currentUser = getCurrentUser();
     initializeStyles(style_default);
     const api = new ReactionsAPI(config, topicId);
     const stateManager = new StateManager;
     const postsMap = new Map;
-    const posts = document.querySelectorAll(config.selectors.post);
-    posts.forEach((post) => {
-      const reactionsContainer = post.querySelector(config.selectors.reactionsContainer);
-      if (!reactionsContainer)
-        return;
-      reactionsContainer.style.position = "relative";
-      const { votes, upvote, downvote } = createVoteElements(config, reactionsContainer);
-      const reactions = createReactionElements(config, reactionsContainer);
-      const elements = {
-        post,
-        reactionsContainer,
-        votes,
-        upvote,
-        downvote,
-        reactions: reactions || undefined
-      };
-      const pid = config.pidFn(elements);
-      postsMap.set(pid, elements);
-      addVoteEventHandlers(elements, pid, topicId, api, stateManager, config);
-      addReactionEventHandlers(elements, pid, topicId, api, stateManager, config);
-    });
-    const allPids = Array.from(postsMap.keys());
-    if (config.reactions) {
-      try {
-        const response = await api.get("/reactions", {
-          query: { postIds: allPids.join(",") }
-        });
-        const data = await response.json();
-        processReactionData(data, postsMap, currentUser, stateManager);
-      } catch (error) {
-        console.error("Failed to load reactions:", error);
+    const allPostElements = document.querySelectorAll(config.selectors.post);
+    const processedPostIds = [];
+    allPostElements.forEach((postElement) => {
+      const postId = initializePostElements(postElement, config, postsMap, topicId, api, stateManager);
+      if (postId) {
+        processedPostIds.push(postId);
       }
+    });
+    if (processedPostIds.length === 0) {
+      return;
+    }
+    const dataLoadPromises = [];
+    if (config.reactions) {
+      dataLoadPromises.push(loadReactionsData(api, processedPostIds, postsMap, currentUser, stateManager));
     }
     if (config.votes) {
-      try {
-        const response = await api.get("/votes", {
-          query: { postIds: allPids.join(",") }
-        });
-        const data = await response.json();
-        processVoteData(data, postsMap, currentUser, stateManager);
-      } catch (error) {
-        console.error("Failed to load votes:", error);
-      }
+      dataLoadPromises.push(loadVotesData(api, processedPostIds, postsMap, currentUser, stateManager));
     }
+    await Promise.allSettled(dataLoadPromises);
   }
   window.Reactions = Reactions;
 })();

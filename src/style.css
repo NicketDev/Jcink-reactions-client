@@ -49,6 +49,9 @@
 	display: flex;
 	align-items: center;
 	gap: 4px;
+	margin: 4px;
+	opacity: 1;
+	transition: opacity 0.2s ease;
 }
 
 .reactions-add-button {
@@ -68,13 +71,21 @@
 	background-color: rgba(0, 0, 0, 0.1);
 }
 
+.reactions-add-button.reactions-hidden {
+	display: none;
+}
+
 .reactions-compact-reactions {
 	display: none;
 	gap: 2px;
 }
 
-.reactions-compact-option {
+.reactions-compact-reactions.reactions-has-active {
 	display: flex;
+}
+
+.reactions-compact-option {
+	display: none;
 	align-items: center;
 	justify-content: center;
 	gap: 2px;
@@ -85,6 +96,10 @@
 	transition: background-color 0.2s ease;
 	background-color: rgba(0, 0, 0, 0.05);
 	font-size: 14px;
+}
+
+.reactions-compact-option.reactions-active {
+	display: flex;
 }
 
 .reactions-compact-option:hover {
@@ -102,23 +117,33 @@
 
 /* Expanded view styles */
 .reactions-expanded-view {
-	display: none;
 	position: absolute;
-	bottom: 0;
-	right: 0;
+	bottom: 4px;
+	right: 4px;
 	background: white;
 	border: 1px solid #e5e5e5;
 	border-radius: 8px;
 	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 	z-index: 1000;
+	opacity: 0;
+	transform: translateY(8px) scale(0.95);
+	pointer-events: none;
+	transition:
+		opacity 0.2s ease,
+		transform 0.2s ease;
 }
 
-.reactions-reactions.reactions-expanded .reactions-compact-view {
-	display: none;
+/* Transitions on post hover with slight delay to prevent flickering */
+.post-normal:hover .reactions-expanded-view {
+	opacity: 1;
+	transform: translateY(0) scale(1);
+	pointer-events: auto;
+	transition-delay: 0.1s;
 }
 
-.reactions-reactions.reactions-expanded .reactions-expanded-view {
-	display: block;
+.post-normal:hover .reactions-compact-view {
+	opacity: 0;
+	transition-delay: 0.05s;
 }
 
 .reactions-reactions-options {
